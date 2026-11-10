@@ -38,9 +38,9 @@ Pantalla partida en dos mitades. **Tocar** = levantar ese pie. **Arrastrar** = m
 
 Si un choque te pilla sobre un pie, te caes; si te pilla con los dos pies apoyados, solo te empuja. Saber **cuándo** tener los dos pies en el suelo es la habilidad que distingue al experto.
 
-**Cámara (decidido):** por defecto, **tercera persona baja sobre el hombro**: 1,6 m de alto, 3,2 m detrás, FOV de 70°, con un sesgo automático de hasta 25° para que balón y rival queden en cuadro. Motivos: en primera persona no ves tus pies (y el juego entero va de los pies), pierdes al rival que tienes al lado y la caída, que es el chiste, no se ve. La **primera persona ("Vista Botines")** queda como opción en Ajustes: es solo otra posición de cámara, así que cuesta poco, y se desbloquea al ganar al rival 3, como reto de maestría.
+**Cámara (decidido):** por defecto **tercera persona baja sobre el hombro** (1,6 m de alto, 3,2 m detrás, FOV 70°, sesgo automático de hasta 25° para encuadrar balón y rival). En primera persona no ves tus pies (el juego entero), pierdes al rival que está a tu lado y no se ve la caída, que es el chiste. **Primera persona ("Vista Botines")** queda como opción en Ajustes: es otra posición de cámara, barata; se desbloquea al ganar al rival 3.
 
-**Preparado para el PvP:** el bot usa la misma API de "pulgares virtuales" que el jugador, con los mismos límites: como mínimo 0,15 s entre apoyos y el mismo alcance. No tiene información extra. La simulación usa paso fijo a 60 Hz y `rng()` con semilla, lo que permite el netcode con rollback más adelante.
+**Listo para PvP:** el bot usa la misma API de "pulgares virtuales" y los mismos límites (mínimo 0,15 s entre apoyos, mismo alcance), sin información extra. Paso fijo de 60 Hz y `rng()` con semilla: permiten rollback más adelante.
 
 ## 3. Primer minuto (sin textos, solo pulgares fantasma)
 
@@ -82,11 +82,10 @@ Los rivales se caen con las mismas reglas que tú. **La derrota no cuesta nada**
 **Build 1:** solo se guarda el avance de la liga en local. Cada rival vencido regala una equipación (5 en total). No hay moneda, ni tienda, ni anuncios.
 
 **Más adelante (Play Store):**
-- **Chapas** como moneda blanda: victoria 30, derrota 10, gol 5 y primera victoria contra un rival 100. Rinde unas 10 chapas por minuto.
-- Los cosméticos para los muñecos (cabezas, equipaciones, botas y celebraciones) cuestan 150–600 chapas, unos 15–60 min de juego. Nunca cambian el colisionador.
-- **Anuncio recompensado** opcional: dobla las chapas del partido, máximo 5 al día. Sin anuncios intersticiales.
-- Pase cosmético opcional. Nunca se vende poder.
-- El único sumidero son los cosméticos; cuando el catálogo se agote, se rotará.
+- **Chapas** (moneda blanda): victoria 30, derrota 10, gol 5, primera victoria contra un rival 100; unas 10 por minuto.
+- Cosméticos de los muñecos (cabezas, equipaciones, botas, celebraciones): 150–600 chapas, 15–60 min de juego. Nunca cambian el colisionador.
+- **Anuncio recompensado** opcional: dobla las chapas del partido, máximo 5 al día. Sin intersticiales.
+- Pase cosmético opcional; nunca se vende poder. El único sumidero son los cosméticos, que rotan cuando el catálogo se agote.
 
 ## 7. Victoria, derrota y Resultados
 
@@ -94,13 +93,13 @@ Los rivales se caen con las mismas reglas que tú. **La derrota no cuesta nada**
 
 **Pantalla de Resultados:** marcador y ganador, duración, tu tiro más fuerte (km/h), goles de pared, caídas tuyas frente a las del rival y pasos dados. Botones: **Revancha** (grande), **Siguiente rival** (si ganaste) y Menú. *Más adelante:* repetición en bucle de 3 s de "la caída del partido" (búfer de transformaciones).
 
-**Condición de cancelación** (prueba con 6–8 personas en sus teléfonos, 15 min cada una). Se cancela si se cumple **cualquiera** de estas:
-- Menos del 50 % marca el primer gol del tutorial en menos de 90 s.
+**Cancelación** (6–8 personas, en su teléfono, 15 min). Se cancela si ocurre **cualquiera**:
+- Menos del 50 % marca el gol del tutorial antes de 90 s.
 - La mediana necesita más de 4 intentos para ganar a Tito.
-- La tasa de victorias contra Rulo no mejora entre el primer y el tercer bloque de partidos (no hay curva de dominio).
-- La mayoría califica las caídas de "frustrantes" antes que de "graciosas".
-- Menos de la mitad pide la revancha sin que se lo sugieran.
-- Menos de 30 fps en un Android de gama media de 2021: cancelar o cambiar de enfoque técnico.
+- La tasa de victorias contra Rulo no mejora del primer al tercer bloque de partidos (no hay dominio).
+- La mayoría llama a las caídas "frustrantes" antes que "graciosas".
+- Menos de la mitad pide revancha sin que se lo sugieran.
+- Menos de 30 fps en un Android de gama media de 2021 (cancelar o cambiar de enfoque técnico).
 
 ## 8. Juegos cercanos y diferencias
 
