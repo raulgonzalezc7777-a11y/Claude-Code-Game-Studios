@@ -618,7 +618,7 @@
         const L2 = K.pitch_length / 2 + 2, W2 = K.pitch_width / 2 + 2; px = clamp(px, -L2, L2); pz = clamp(pz, -W2, W2);
       }
     } else if (mode === 'figures') {
-      px = 0; py = 1.25; pz = 5.2; lx = 0; ly = 0.72; lz = 0; fov = 40;
+      px = 0; py = 1.2; pz = 4.6; lx = 0; ly = 0.7; lz = 0; fov = 46;
       cs.px = px; cs.py = py; cs.pz = pz; cs.lx = lx; cs.ly = ly; cs.lz = lz;
     } else { // broadcast: the touchline camera, for the title and results
       const b = w.ball;
@@ -721,5 +721,5 @@
   function worldToScreen(x, y, z) { _v.set(x, y, z).project(camera); return { x: (_v.x + 1) / 2 * innerWidth, y: (1 - _v.y) / 2 * innerHeight, behind: _v.z > 1 }; }
   function render() { if (renderer) renderer.render(scene, camera); }
 
-  window.View = { init, resize, setCast, sync, render, showFigures, screenOf, worldToScreen, ROSTER, TEAM, get ok() { return !!renderer; } };
+  window.View = { get _scene() { return scene; }, init, resize, setCast, sync, render, showFigures, screenOf, worldToScreen, ROSTER, TEAM, get ok() { return !!renderer; } };
 })();
