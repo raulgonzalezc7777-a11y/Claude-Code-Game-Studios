@@ -700,7 +700,7 @@ const scenes = {
     update(dt) { state.t += dt; },
     draw() {
       const w = View.showFigures();
-      View.sync(w, STEP, { events: [], camMode: 'figures', snapCam: true }); View.render(); ctx.clearRect(0, 0, innerWidth, innerHeight);
+      View.sync(w, STEP, { events: [], camMode: 'figures', snapCam: true, zoom: params.has('zoom') ? Number(params.get('zoom')) : null }); View.render(); ctx.clearRect(0, 0, innerWidth, innerHeight);
       const lab = $('figLabels'); if (!lab.childElementCount) lab.innerHTML = Object.values(View.ROSTER).map(r => `<div>${r.name}</div>`).join('');
       [...lab.children].forEach((d, i) => { const s = View.screenOf(i, -1.15); if (s) { d.style.left = s.x + 'px'; d.style.top = s.y + 'px'; } });
     },

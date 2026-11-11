@@ -4,6 +4,7 @@
 "Un juego de fútbol en primera persona en el que tengas que jugar con dos pies en vez de manos."
 "Que el fútbol, ¿qué te parece que sea un uno contra uno? Que sea contra gente y todo eso, ¿qué te parece? Yo es lo que mejor veo. Por así decirlo, físicas. Y que haya un modo que sea borracho y que te vayas cayendo."
 "Diseña todo bien, tienes todo el tiempo del mundo, necesito que sea bueno, no malo, que esté muy bien hecho, perfecto. Haz que pase por 5 subagentes y diséñalo y modélalo donde necesites, Unity o lo que tú veas, pero tu objetivo es crearlo, el juego perfecto. Haz bien los personajes estilo Rec Room."
+After play: "Está bien pero el diseño de los personajes quiero que sea así" (vídeo de TikTok de @3ballszn, anuncio de 3BALL) · "los personajes no son iguales".
 
 **Pitch:** Fútbol 1 contra 1 en una jaula de barrio donde cada pulgar es un pie: camina, regatea y suelta un patadón sin caerte de culo.
 
@@ -18,7 +19,7 @@
 **Intent:** payoff builds (you said: "físicas", caerse tiene que hacer gracia)
 
 ## Look and references
-- Look: juguetes de plástico gorditos con botazas, en 3D toon (dirección "social game" tipo Rec Room *(you said)*, sin copiar su avatar: aquí hay piernas completas y botas enormes). Jaula de fútbol de barrio a media tarde dorada, cielo degradado y siluetas de edificios. Firma: huellas de tiza del color del equipo que dejan las botas y se borran en 3 s. Equipo propio naranja ● (botas naranja = izquierda, amarilla = derecha), rival azul ▲.
+- Look: avatares flotantes de juego social en 3D toon *(you said: como el vídeo de referencia)*: cuerpo cápsula con sudadera y pantalón claro, sin brazos ni piernas, manos sueltas, cabeza grande con cara de caricatura (cejas, ojos con pupila, nariz, boca). Para que el juego se lea, las botas también van sueltas y grandes bajo el cuerpo. Personajes propios, no los del vídeo. Jaula de fútbol de barrio a media tarde dorada, cielo degradado y siluetas de edificios. Firma: huellas de tiza del color del equipo que dejan las botas y se borran en 3 s. Equipo propio naranja ● (botas naranja = izquierda, amarilla = derecha), rival azul ▲.
 - References: QWOP (una entrada por parte del cuerpo, pero aquí legible), Rocket League (la jaula 1v1 y las paredes que juegan), juegos de lucha 1v1 (el cuerpo siempre encara al objetivo).
 - View: 3D · Camera: tercera persona baja sobre el hombro (1,7 m de alto, 3,4 m detrás), siempre encarando el balón; opción "Vista Botines" en primera persona (tecla V / ajustes).
 
@@ -58,7 +59,7 @@ Desde el primer partido el rival juega con tus mismas reglas: si te quedas sobre
 ## Avoid
 - La palabra "borracho" y referencias al alcohol en el juego (clasificación por edad): se llama Modo Mareado.
 - Primera persona como cámara por defecto: tapa los pies y al rival (queda como opción).
-- Copiar el avatar de Rec Room (torso flotante sin piernas).
+- Copiar personajes, nombres o marca de otro juego (el vídeo da el estilo, no los personajes).
 - Pago para ganar.
 
 ## Out of scope

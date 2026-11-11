@@ -32,7 +32,7 @@
 
   function makeFoot(side) {
     return { side, x: 0, z: 0, y: 0, vx: 0, vz: 0, px: 0, pz: 0, py: 0, st: 'planted', t: 0, cool: 0,
-      forced: 0, ftx: 0, ftz: 0, tackleCool: 0, kickT: 0 };
+      forced: 0, ftx: 0, ftz: 0, tackleCool: 0, kickT: -99 };
   }
   function makePlayer(id, team) {
     return {

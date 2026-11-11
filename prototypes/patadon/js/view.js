@@ -51,66 +51,82 @@
   function drawFaces() {
     return canvasTex(512, 256, (g) => {
       g.clearRect(0, 0, 512, 256);
-      const ink = '#1E1A2E', cheek = 'rgba(255,143,163,0.6)';
-      const cell = (i, fn) => { g.save(); g.translate((i % 4) * 128, Math.floor(i / 4) * 128); fn(); g.restore(); };
-      const eyeO = (x, y) => { g.fillStyle = ink; g.beginPath(); g.ellipse(x, y, 7.5, 12, 0, 0, 7); g.fill(); g.fillStyle = '#fff'; g.beginPath(); g.arc(x + 2.5, y - 4.5, 3, 0, 7); g.fill(); };
-      const cheeks = () => { g.fillStyle = cheek; g.beginPath(); g.ellipse(34, 72, 9, 6, 0, 0, 7); g.ellipse(94, 72, 9, 6, 0, 0, 7); g.fill(); };
+      const ink = '#1E1A2E', cheek = 'rgba(255,120,140,0.45)';
+      const cell = (i, fn) => { g.save(); g.translate((i % 4) * 128, Math.floor(i / 4) * 128); g.beginPath(); g.rect(0, 0, 128, 128); g.clip(); g.translate(64, 62); g.scale(1.3, 1.3); g.translate(-64, -62); fn(); g.restore(); };
       g.lineCap = 'round'; g.lineJoin = 'round';
-      cell(0, () => { eyeO(46, 54); eyeO(82, 54); cheeks(); g.strokeStyle = ink; g.lineWidth = 5; g.beginPath(); g.arc(64, 76, 13, 0.25, Math.PI - 0.25); g.stroke(); });
-      cell(1, () => { g.strokeStyle = ink; g.lineWidth = 5; g.beginPath(); g.moveTo(38, 56); g.lineTo(54, 56); g.moveTo(74, 56); g.lineTo(90, 56); g.stroke(); cheeks(); g.beginPath(); g.arc(64, 76, 13, 0.25, Math.PI - 0.25); g.stroke(); });
-      cell(2, () => {
-        g.strokeStyle = ink; g.lineWidth = 6;
-        g.beginPath(); g.moveTo(38, 46); g.lineTo(54, 55); g.lineTo(38, 63); g.moveTo(90, 46); g.lineTo(74, 55); g.lineTo(90, 63); g.stroke();
-        cheeks(); g.fillStyle = ink; g.beginPath(); g.moveTo(46, 76); g.lineTo(82, 76); g.arc(64, 76, 18, 0, Math.PI); g.fill();
-        g.fillStyle = '#FF6B81'; g.beginPath(); g.ellipse(64, 88, 9, 5, 0, 0, 7); g.fill();
+      const brows = (dy = 0, tilt = 0) => { g.strokeStyle = ink; g.lineWidth = 6; g.beginPath(); g.moveTo(34, 38 + dy - tilt); g.lineTo(55, 36 + dy + tilt); g.moveTo(73, 36 + dy + tilt); g.lineTo(94, 38 + dy - tilt); g.stroke(); };
+      const eye = (x, y, px = 0, py = 0, lid = 0) => {
+        g.fillStyle = '#fff'; g.strokeStyle = ink; g.lineWidth = 3; g.beginPath(); g.ellipse(x, y, 10, 12, 0, 0, 7); g.fill(); g.stroke();
+        g.fillStyle = '#3B2A20'; g.beginPath(); g.arc(x + px, y + 1 + py, 5.5, 0, 7); g.fill();
+        g.fillStyle = ink; g.beginPath(); g.arc(x + px, y + 1 + py, 2.8, 0, 7); g.fill();
+        g.fillStyle = '#fff'; g.beginPath(); g.arc(x + px + 2, y - 2 + py, 1.6, 0, 7); g.fill();
+        if (lid) { g.fillStyle = 'rgba(0,0,0,0)'; g.strokeStyle = ink; g.lineWidth = 4; g.beginPath(); g.moveTo(x - 10, y - 12 + lid); g.lineTo(x + 10, y - 12 + lid); g.stroke(); }
+      };
+      const nose = () => { g.strokeStyle = 'rgba(30,26,46,0.55)'; g.lineWidth = 3.5; g.beginPath(); g.moveTo(64, 56); g.quadraticCurveTo(70, 70, 62, 72); g.stroke(); };
+      const cheeks = () => { g.fillStyle = cheek; g.beginPath(); g.ellipse(32, 74, 9, 5, 0, 0, 7); g.ellipse(96, 74, 9, 5, 0, 0, 7); g.fill(); };
+      const smile = (w = 15, open = 0) => {
+        if (open) { g.fillStyle = ink; g.beginPath(); g.moveTo(64 - w, 82); g.quadraticCurveTo(64, 82 + open * 2.2, 64 + w, 82); g.closePath(); g.fill();
+          g.fillStyle = '#fff'; g.beginPath(); g.moveTo(64 - w + 4, 83); g.lineTo(64 + w - 4, 83); g.lineTo(64 + w - 7, 86); g.lineTo(64 - w + 7, 86); g.closePath(); g.fill();
+          g.fillStyle = '#FF6B81'; g.beginPath(); g.ellipse(64, 82 + open * 0.9, w * 0.45, open * 0.35, 0, 0, 7); g.fill(); }
+        else { g.strokeStyle = ink; g.lineWidth = 4.5; g.beginPath(); g.moveTo(64 - w, 81); g.quadraticCurveTo(64, 92, 64 + w, 81); g.stroke(); }
+      };
+      cell(0, () => { brows(); eye(45, 52); eye(83, 52); nose(); cheeks(); smile(14); });
+      cell(1, () => { brows(); g.strokeStyle = ink; g.lineWidth = 4.5; g.beginPath(); g.moveTo(35, 54); g.quadraticCurveTo(45, 60, 55, 54); g.moveTo(73, 54); g.quadraticCurveTo(83, 60, 93, 54); g.stroke(); nose(); cheeks(); smile(14); });
+      cell(2, () => { // effort
+        g.strokeStyle = ink; g.lineWidth = 6; g.beginPath(); g.moveTo(32, 36); g.lineTo(55, 44); g.moveTo(96, 36); g.lineTo(73, 44); g.stroke();
+        g.lineWidth = 5; g.beginPath(); g.moveTo(36, 48); g.lineTo(54, 55); g.lineTo(36, 61); g.moveTo(92, 48); g.lineTo(74, 55); g.lineTo(92, 61); g.stroke();
+        nose(); cheeks(); smile(17, 12);
       });
-      for (const [i, rot] of [[3, 0], [4, Math.PI]]) cell(i, () => {
-        g.strokeStyle = ink; g.lineWidth = 4;
-        for (const ex of [46, 82]) { g.beginPath(); for (let a = 0; a < 14; a += 0.3) { const r = a * 0.95; const x = ex + Math.cos(a + rot) * r, y = 54 + Math.sin(a + rot) * r; a === 0 ? g.moveTo(x, y) : g.lineTo(x, y); } g.stroke(); }
-        g.lineWidth = 5; g.beginPath(); for (let x = 44; x <= 84; x += 2) { const y = 84 + Math.sin((x - 44) / 5 + rot) * 4; x === 44 ? g.moveTo(x, y) : g.lineTo(x, y); } g.stroke();
-        cheeks();
+      for (const [i, rot] of [[3, 0], [4, Math.PI]]) cell(i, () => { // dizzy spirals
+        brows(-2, 3); g.strokeStyle = ink; g.lineWidth = 3.5;
+        for (const ex of [45, 83]) { g.fillStyle = '#fff'; g.beginPath(); g.ellipse(ex, 52, 11, 12, 0, 0, 7); g.fill(); g.beginPath(); for (let a = 0; a < 13; a += 0.3) { const r = a * 0.85; const x = ex + Math.cos(a + rot) * r, y = 52 + Math.sin(a + rot) * r; a === 0 ? g.moveTo(x, y) : g.lineTo(x, y); } g.stroke(); }
+        nose(); cheeks(); g.lineWidth = 4.5; g.beginPath(); for (let x = 46; x <= 82; x += 2) { const y = 85 + Math.sin((x - 46) / 4.5 + rot) * 3.5; x === 46 ? g.moveTo(x, y) : g.lineTo(x, y); } g.stroke();
       });
-      cell(5, () => {
-        g.strokeStyle = ink; g.lineWidth = 6;
-        for (const ex of [46, 82]) { g.beginPath(); g.moveTo(ex - 9, 45); g.lineTo(ex + 9, 63); g.moveTo(ex + 9, 45); g.lineTo(ex - 9, 63); g.stroke(); }
-        g.lineWidth = 5; g.beginPath(); g.arc(64, 84, 7, 0, 7); g.stroke();
+      cell(5, () => { // knocked out
+        brows(4, -3); g.strokeStyle = ink; g.lineWidth = 6;
+        for (const ex of [45, 83]) { g.beginPath(); g.moveTo(ex - 9, 44); g.lineTo(ex + 9, 61); g.moveTo(ex + 9, 44); g.lineTo(ex - 9, 61); g.stroke(); }
+        nose(); g.lineWidth = 4.5; g.beginPath(); g.ellipse(64, 86, 7, 9, 0, 0, 7); g.stroke();
       });
-      cell(6, () => {
-        g.strokeStyle = ink; g.lineWidth = 6;
-        g.beginPath(); g.moveTo(37, 60); g.lineTo(46, 47); g.lineTo(55, 60); g.moveTo(73, 60); g.lineTo(82, 47); g.lineTo(91, 60); g.stroke();
-        cheeks(); g.fillStyle = ink; g.beginPath(); g.moveTo(40, 72); g.lineTo(88, 72); g.arc(64, 72, 24, 0, Math.PI); g.fill();
-        g.fillStyle = '#FF6B81'; g.beginPath(); g.ellipse(64, 88, 12, 7, 0, 0, 7); g.fill();
+      cell(6, () => { // goal
+        brows(-6, -2); g.strokeStyle = ink; g.lineWidth = 5.5; g.beginPath(); g.moveTo(35, 58); g.lineTo(45, 46); g.lineTo(55, 58); g.moveTo(73, 58); g.lineTo(83, 46); g.lineTo(93, 58); g.stroke();
+        nose(); cheeks(); smile(22, 16);
       });
-      cell(7, () => {
-        g.strokeStyle = ink; g.lineWidth = 5;
-        g.beginPath(); g.moveTo(36, 40); g.lineTo(54, 46); g.moveTo(92, 40); g.lineTo(74, 46); g.stroke();
-        g.fillStyle = ink; for (const ex of [46, 82]) { g.beginPath(); g.ellipse(ex, 58, 8, 6, 0, 0, Math.PI); g.fill(); }
-        g.lineWidth = 4; g.beginPath(); for (let x = 48; x <= 80; x += 2) { const y = 86 + Math.sin((x - 48) / 2.2) * 2.5; x === 48 ? g.moveTo(x, y) : g.lineTo(x, y); } g.stroke();
+      cell(7, () => { // conceded
+        g.strokeStyle = ink; g.lineWidth = 6; g.beginPath(); g.moveTo(34, 34); g.lineTo(55, 42); g.moveTo(94, 34); g.lineTo(73, 42); g.stroke();
+        eye(45, 54, 0, 4, 9); eye(83, 54, 0, 4, 9); nose();
+        g.lineWidth = 4.5; g.beginPath(); for (let x = 48; x <= 80; x += 2) { const y = 88 + Math.sin((x - 48) / 2.2) * 2.2 - Math.sin((x - 48) / 32 * Math.PI) * 4; x === 48 ? g.moveTo(x, y) : g.lineTo(x, y); } g.stroke();
       });
     });
   }
 
   // ---- A character ----------------------------------------------------------------------------
-  // The legs are drawn from the simulated feet by two-bone IK; the upper body rides the pelvis.
+  // Floating avatars: the body hovers over the simulated pelvis, the boots sit on the simulated feet.
   const Y = new THREE.Vector3(0, 1, 0);
   function makeChar(id, team, isHuman) {
     const d = ROSTER[id], T = TEAM[team], S = d.scale;
-    const o = { id, team, def: d, isHuman, faceI: 0, blinkAt: 2 + (id.length % 3), tail: 0, tailV: 0, fallK: 0 };
+    const o = { id, team, def: d, isHuman, faceI: -1, blinkAt: 2 + (id.length % 3), tail: 0, tailV: 0, fallK: 0 };
     const root = new THREE.Group(); scene.add(root); o.root = root;
     const upper = new THREE.Group(); root.add(upper); o.upper = upper;
     o.mats = [];
     const m = (c, extra) => { const mm = toon(c, extra); o.mats.push(mm); return mm; };
     const mesh = (geo, mat, parent, x = 0, y = 0, z = 0) => { const me = new THREE.Mesh(geo, mat); me.position.set(x, y, z); me.castShadow = !cheap; parent.add(me); return me; };
     const shirt = m(T.shirt), skin = m(d.skin), shorts = m(0xF4F1E6);
-    // upper body, local origin at the hip joint
-    mesh(new THREE.CylinderGeometry(0.2 * d.torsoX * S, 0.22 * d.torsoX * S, 0.12 * S, 12), shorts, upper, 0, 0.04 * S, 0);
-    const torso = mesh(new THREE.CapsuleGeometry(0.21 * S, 0.1 * S, 4, 10), shirt, upper, 0, 0.21 * S * d.torsoY, 0);
+    // Floating avatar (the reference video's look): no arms or legs, a bean body in a hoodie,
+    // loose hands and loose boots. Local origin is the body's hover point.
+    const pants = mesh(new THREE.CapsuleGeometry(0.17 * S, 0.02 * S, 4, 12), shorts, upper, 0, 0.1 * S, 0);
+    pants.scale.set(d.torsoX, 1, 0.95);
+    const torso = mesh(new THREE.CapsuleGeometry(0.2 * S, 0.28 * S, 5, 14), shirt, upper, 0, 0.36 * S * d.torsoY, 0);
     torso.scale.set(d.torsoX, d.torsoY, 1);
+    const hood = mesh(new THREE.TorusGeometry(0.13 * S, 0.045 * S, 6, 16), m(T.dark), upper, 0, (0.36 + 0.26) * S * d.torsoY, -0.03 * S);
+    hood.rotation.x = Math.PI / 2 + 0.2; hood.scale.set(d.torsoX, 1, 1);
+    const pocket = mesh(new THREE.BoxGeometry(0.2 * S * d.torsoX, 0.07 * S, 0.02), m(T.dark), upper, 0, 0.2 * S * d.torsoY, 0.19 * S);
+    pocket.rotation.x = -0.25;
     // chest emblem: disc for team A, triangle for team B (shape repeats the colour)
-    const emb = team === 0 ? new THREE.CircleGeometry(0.055 * S, 16) : new THREE.CircleGeometry(0.07 * S, 3);
-    const embM = mesh(emb, m(0xFFFFFF), upper, 0, 0.27 * S * d.torsoY, 0.215 * S + 0.002);
+    const emb = team === 0 ? new THREE.CircleGeometry(0.05 * S, 16) : new THREE.CircleGeometry(0.065 * S, 3);
+    const embM = mesh(emb, m(0xFFFFFF), upper, 0.08 * S * d.torsoX, 0.42 * S * d.torsoY, 0.19 * S);
+    embM.rotation.y = 0.35;
     if (team === 1) embM.rotation.z = Math.PI / 2;
-    const headY = (0.43 + (d.torsoY - 1) * 0.12) * S, hr = 0.19 * S * d.head;
+    const headY = (0.8 + (d.torsoY - 1) * 0.2) * S, hr = 0.23 * S * d.head;
     const head = new THREE.Group(); head.position.set(0, headY, 0); upper.add(head); o.head = head;
     mesh(new THREE.SphereGeometry(hr, 16, 12), skin, head).scale.set(1.05, 1, 1);
     o.faceTex = faceCanvas.clone(); o.faceTex.needsUpdate = true;
@@ -118,13 +134,13 @@
     const face = new THREE.Mesh(new THREE.SphereGeometry(hr * 1.012, 14, 10, Math.PI / 2 - 0.95, 1.9, 0.75, 1.35),
       new THREE.MeshBasicMaterial({ map: o.faceTex, transparent: true, alphaTest: 0.5 }));
     face.scale.set(1.05, 1, 1); head.add(face); o.mats.push(face.material);
-    // arms: mitten hands, decorative
+    // loose hands: they orbit an invisible shoulder, so they swing and flail
     o.arms = [];
     for (const s of [-1, 1]) {
-      const sh = new THREE.Group(); sh.position.set(s * 0.24 * S * d.torsoX, 0.37 * S * d.torsoY, 0); upper.add(sh);
-      mesh(new THREE.CapsuleGeometry(0.06 * S, 0.16 * S, 3, 8), shirt, sh, 0, -0.12 * S, 0);
-      mesh(new THREE.SphereGeometry(0.075 * S, 10, 8), skin, sh, 0, -0.27 * S, 0);
-      sh.rotation.z = s * 0.25; o.arms.push(sh);
+      const sh = new THREE.Group(); sh.position.set(s * 0.3 * S * d.torsoX, 0.54 * S * d.torsoY, 0); upper.add(sh);
+      const hand = mesh(new THREE.SphereGeometry(0.075 * S, 12, 10), skin, sh, 0, -0.26 * S, 0.04 * S); hand.scale.set(0.95, 1.1, 0.85);
+      mesh(new THREE.SphereGeometry(0.03 * S, 8, 6), skin, sh, s * -0.06 * S, -0.23 * S, 0.07 * S); // thumb
+      sh.rotation.z = s * 0.3; o.arms.push(sh);
     }
     // ---- silhouettes
     const hair = d.hair != null ? m(d.hair) : null;
@@ -143,14 +159,14 @@
         mesh(new THREE.SphereGeometry(rr * S, 10, 8), hair, head, Math.cos(a) * hr * 0.95, hr * 0.55 + Math.sin(a * 2) * 0.03, Math.sin(a) * hr * 0.75 - 0.03);
       }
       mesh(new THREE.SphereGeometry(0.13 * S, 10, 8), hair, head, 0, hr * 0.85, -0.02);
-      const band = mesh(new THREE.TorusGeometry(hr * 1.0, 0.02, 6, 20), m(d.band), head, 0, hr * 0.42, 0); band.rotation.x = Math.PI / 2 + 0.25;
+      const band = mesh(new THREE.TorusGeometry(hr * 0.86, 0.022, 6, 20), m(d.band), head, 0, hr * 0.6, -0.01); band.rotation.x = Math.PI / 2 + 0.35;
     }
     if (id === 'ramiro') { // beret, moustache, belly
       const b = mesh(new THREE.CylinderGeometry(0.21 * S, 0.2 * S, 0.045, 18), m(d.hat), head, 0.02, hr * 0.92, -0.01); b.rotation.z = 0.12;
       mesh(new THREE.SphereGeometry(0.03, 6, 6), m(d.hat), head, 0.02, hr * 0.92 + 0.04, 0);
       const tm = m(d.tache);
       for (const s of [-1, 1]) { const t = mesh(new THREE.CapsuleGeometry(0.022, 0.06, 3, 6), tm, head, s * 0.045, -0.035, hr * 0.93); t.rotation.z = s * 1.2; }
-      mesh(new THREE.SphereGeometry(0.16 * S, 14, 10), shirt, upper, 0, 0.13 * S, 0.1 * S);
+      mesh(new THREE.SphereGeometry(0.17 * S, 14, 10), shirt, upper, 0, 0.24 * S, 0.09 * S);
     }
     if (id === 'mamut') { // wool hat and pompom on a small head over square shoulders
       const hm = m(d.hat);
@@ -170,9 +186,9 @@
       mesh(new THREE.LatheGeometry(pts, 10), hair, tailG);
       const cap = mesh(new THREE.SphereGeometry(hr * 1.03, 14, 8, 0, Math.PI * 2, 0, 1.15), hair, head); cap.scale.set(1.05, 1, 1); cap.rotation.x = -0.3;
       const gm = m(INK);
-      for (const s of [-1, 1]) { const g = mesh(new THREE.CircleGeometry(0.045, 14), gm, head, s * 0.07, 0.02, hr * 1.02); g.rotation.y = s * 0.35; }
-      mesh(new THREE.BoxGeometry(0.1, 0.012, 0.01), gm, head, 0, 0.03, hr * 1.04);
-      mesh(new THREE.CylinderGeometry(0.067 * S, 0.067 * S, 0.05, 10), m(d.band), o.arms[1], 0, -0.08 * S, 0);
+      for (const s of [-1, 1]) { const g = mesh(new THREE.CircleGeometry(0.05, 16), gm, head, s * 0.075, 0.075, hr * 0.97); g.rotation.y = s * 0.35; g.rotation.x = -0.3; }
+      mesh(new THREE.BoxGeometry(0.06, 0.012, 0.01), gm, head, 0, 0.085, hr * 1.0);
+      mesh(new THREE.TorusGeometry(0.07 * S, 0.022, 6, 14), m(d.band), o.arms[1], 0, -0.18 * S, 0.04 * S).rotation.x = Math.PI / 2;
     }
     // ---- legs: thigh + shin + big outlined boot (30 % of the height)
     o.thigh = 0.25 * S * d.legs; o.shin = 0.25 * S * d.legs; o.ankleH = 0.12 * S; o.hipBase = o.ankleH + (o.thigh + o.shin) * 0.97;
@@ -181,10 +197,6 @@
     for (const side of [-1, 1]) {
       const bootC = side < 0 ? T.bootL : T.bootR;
       const L = { side };
-      L.thighM = mesh(new THREE.CapsuleGeometry(0.075 * S, o.thigh, 3, 8), skin, root);
-      L.shinG = new THREE.Group(); root.add(L.shinG);
-      L.shinM = mesh(new THREE.CapsuleGeometry(0.058 * S, o.shin, 3, 8), m(0xFFFFFF), L.shinG);
-      mesh(new THREE.CylinderGeometry(0.062 * S, 0.062 * S, 0.035, 10), m(T.dark), L.shinG, 0, o.shin * 0.25, 0);
       const boot = new THREE.Group(); root.add(boot); L.boot = boot;
       const bootM = m(bootC);
       const bg = new THREE.CapsuleGeometry(0.1 * S, 0.16 * S, 4, 10);
@@ -192,6 +204,7 @@
       const bo = new THREE.Mesh(bg, outline); bo.rotation.x = Math.PI / 2; bo.position.copy(bm.position); bo.scale.set(1.08, 1.06, 0.78); boot.add(bo);
       mesh(new THREE.SphereGeometry(0.085 * S, 10, 8), m(shade(bootC, 0.7)), boot, 0, 0.065 * S, 0.19 * S).scale.set(1, 0.7, 1);
       mesh(new THREE.BoxGeometry(0.21 * S, 0.035, 0.34 * S), m(0xFFFFFF), boot, 0, 0.0175, 0.06 * S);
+      mesh(new THREE.CylinderGeometry(0.075 * S, 0.085 * S, 0.06 * S, 12), m(0xFFFFFF), boot, 0, 0.16 * S, -0.02 * S); // sock cuff
       o.legs.push(L);
     }
     // ground mark under the player: ring (team A) or three triangles (team B)
@@ -215,6 +228,7 @@
     const birdM = basic(INK, { side: THREE.DoubleSide });
     o.wings = [new THREE.Mesh(wingG, birdM), new THREE.Mesh(wingG, birdM)]; o.wings[1].scale.x = -1;
     bird.add(o.wings[0], o.wings[1]);
+    setFace(o, 0);
     return o;
   }
 
@@ -238,16 +252,12 @@
     o.fallK += (targetK - o.fallK) * Math.min(1, dt * (fallen ? 9 : 14));
     const fk = o.fallK;
     const th = p.th, fx = Math.cos(th), fz = Math.sin(th), rx = -fz, rz = fx;
-    // hip height drops when the feet spread (the legs cannot stretch further)
-    let maxH = 0;
-    for (const ft of p.feet) {
-      const hx = p.x + rx * ft.side * 0.11 * S, hz = p.z + rz * ft.side * 0.11 * S;
-      maxH = Math.max(maxH, hyp(ft.x - hx, ft.z - hz));
-    }
-    const chain = (o.thigh + o.shin) * 0.99;
-    let hipY = o.ankleH + Math.sqrt(Math.max(chain * chain - maxH * maxH, (chain * 0.45) ** 2));
-    hipY = Math.min(o.hipBase, hipY);
-    hipY = hipY * (1 - fk) + 0.2 * fk;
+    // the body hovers; it dips when the feet spread and bobs with each step
+    let spread = 0;
+    for (const ft of p.feet) spread = Math.max(spread, hyp(ft.x - p.x, ft.z - p.z));
+    const sp0 = hyp(p.vx, p.vz);
+    let hipY = (0.4 - Math.min(0.12, Math.max(0, spread - 0.25) * 0.35)) * S + Math.abs(Math.sin(viewT * 9)) * 0.03 * Math.min(1, sp0);
+    hipY = hipY * (1 - fk) + 0.22 * fk;
     const ox = p.fallX * 0.35 * fk, oz = p.fallZ * 0.35 * fk;
     o.upper.position.set(p.x + ox, hipY, p.z + oz);
     // lean towards where balance is going; lie down when fallen
@@ -269,27 +279,10 @@
       o.arms[i].rotation.x = swing + flail * 0.5;
       o.arms[i].rotation.z = (i ? 1 : -1) * (0.25 + wob * 1.1 + Math.abs(flail) * 0.3 + p.I * 0.4);
     }
-    // legs by two-bone IK, knee pointing forward
+    // loose boots on the simulated feet
     for (let i = 0; i < 2; i++) {
       const ft = p.feet[i], L = o.legs[i];
-      // the hip joint in the world, following the (possibly lying) upper body
-      _v.set(-ft.side * 0.11 * S, -0.02, 0).applyQuaternion(o.upper.quaternion).add(o.upper.position);
-      const hx = _v.x, hy = _v.y, hz = _v.z;
-      const ax = ft.x, ay = o.ankleH * (1 - fk * 0.5) + ft.y, az = ft.z;
-      let dx = ax - hx, dy = ay - hy, dz = az - hz; let dl = hyp(dx, dy, dz);
-      const l1 = o.thigh, l2 = o.shin;
-      const dd = clamp(dl, 0.05, (l1 + l2) * 0.999);
-      dx /= dl || 1; dy /= dl || 1; dz /= dl || 1;
-      const a = (l1 * l1 - l2 * l2 + dd * dd) / (2 * dd), h = Math.sqrt(Math.max(0, l1 * l1 - a * a));
-      // pole: forward of the body (and up when lying)
-      let px = fx + p.fallX * fk, py = 0.25 + fk, pz = fz + p.fallZ * fk;
-      const pd = px * dx + py * dy + pz * dz; px -= pd * dx; py -= pd * dy; pz -= pd * dz;
-      const pl = hyp(px, py, pz) || 1; px /= pl; py /= pl; pz /= pl;
-      const kx = hx + dx * a + px * h, ky = hy + dy * a + py * h, kz = hz + dz * a + pz * h;
-      const ex = hx + dx * dd, ey = hy + dy * dd, ez = hz + dz * dd; // ankle actually reached
-      placeSeg(L.thighM, hx, hy, hz, kx, ky, kz);
-      placeSeg(L.shinG, kx, ky, kz, ex, ey, ez);
-      L.boot.position.set(ax, ft.y + (fk > 0.5 ? 0.02 : 0), az);
+      L.boot.position.set(ft.x, ft.y + (fk > 0.5 ? 0.02 : 0), ft.z);
       // boots point where the body faces; a kicking boot pitches its toe up
       const sp = hyp(ft.vx, ft.vz);
       L.boot.rotation.set(0, Math.PI / 2 - th, 0);
@@ -606,7 +599,7 @@
       const p = w.players[0], fx = Math.cos(p.th), fz = Math.sin(p.th);
       if (mode === 'fp') {
         const pit = K.cam_fp_pitch_deg * Math.PI / 180;
-        px = p.x + fx * 0.05; py = 1.02 * ROSTER.chuta.scale; pz = p.z + fz * 0.05;
+        px = p.x + fx * 0.05; py = 1.18 * ROSTER.chuta.scale; pz = p.z + fz * 0.05;
         lx = px + fx * Math.cos(pit); ly = py - Math.sin(pit); lz = pz + fz * Math.cos(pit);
         fov = K.cam_fp_fov;
         cs.px = px; cs.py = py; cs.pz = pz; cs.lx = lx; cs.ly = ly; cs.lz = lz; // first person never lags
@@ -619,6 +612,7 @@
       }
     } else if (mode === 'figures') {
       px = 0; py = 1.2; pz = 4.6; lx = 0; ly = 0.7; lz = 0; fov = 46;
+      if (info.zoom != null && w.players[info.zoom]) { const zp = w.players[info.zoom]; px = zp.x + 0.35; py = 1.25; pz = 1.6; lx = zp.x; ly = 1.05; lz = 0; fov = 40; }
       cs.px = px; cs.py = py; cs.pz = pz; cs.lx = lx; cs.ly = ly; cs.lz = lz;
     } else { // broadcast: the touchline camera, for the title and results
       const b = w.ball;
